@@ -4,10 +4,11 @@
 #define MAX_ROW 15
 #define MAX_COL 15
 
+#include<ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <windows.h>
+// #include <windows.h>
 
 void draw_chessman(int type, char *tableline);
 void draw_chessboard(int row, int col, int chessboard[MAX_ROW][MAX_COL]);
@@ -21,11 +22,26 @@ int PVP(void);
 int PVE(void);
 
 char colname[15] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'};
+struct Chess_info{
+	int x[225];
+	int y[225];
+	int step[225];
+	int color[225];
+} chess_info;
+
+
 
 
 int main() {
-	SetConsoleOutputCP(65001);//UTF-8编码
-    int choice;
+	// SetConsoleOutputCP(65001);//UTF-8编码
+    
+	for (int i = 0; i < 225; i++){
+	chess_info.x[i] = 0;
+	chess_info.y[i] = 0;
+	chess_info.step[i] = i + 1;
+	chess_info.color[i] = BLANK;
+}	
+	int choice;
 	draw_menu();
 	while (1){
 		scanf("%d", &choice);
@@ -146,47 +162,61 @@ int PVE(){
 int PVP(){
 	int chessboard[MAX_ROW][MAX_COL] = {BLANK};
 	int x = 0, y = 0;
-	char temp_y;
+	char s[6];//输入位置坐标
 	int savechess = 0;
 	draw_chessboard(MAX_ROW, MAX_COL, chessboard);
 	for (int step = 1; step <= MAX_COL*MAX_ROW; step++){
 		if (step % 2 == 1){
 			printf("请黑棋落子：\n");
 			while (1) {
-            // 清除输入缓冲区
-            while (getchar() != '\n');
-
+			x = 0;y = 0;//清空x,y
+			for (int i = 0; i < 6; i++){
+				s[i] = 0;
+			}
             printf("请输入坐标（如 a 10）：");
-            if (scanf("%c %d", &temp_y, &x) != 2) {
-                printf("输入格式错误，请重新输入：\n");
-                // 清除输入缓冲区
-                while (getchar() != '\n');
-                continue;
-            }
-            // 清除输入缓冲区
-            while (getchar() != '\n');
-
-            // 将字母转换为数字
-            if (temp_y >= 'a' && temp_y <= 'o') {
-                y = temp_y - 'a';
-            } else if (temp_y >= 'A' && temp_y <= 'O') {
-                y = temp_y - 'A';
-            } else {
-                printf("横坐标输入错误，请重新输入：\n");
-                continue;
-            }
-
-            if (x >= MAX_ROW || y >= MAX_COL || x < 0 || y < 0) {
-                printf("输入超出棋盘范围，请重新输入：\n");
-                continue;
-            }
-            if (chessboard[x][y] != BLANK) {
-                printf("此处已有棋子，请重新输入：\n");
-                continue;
-            }
-            break;
-        }
+            scanf("%s", s);
+			int i = 0;
+			if (isdigit(s[i])){
+				while (isdigit(s[i])){
+					x = x * 10 + s[i] - '0';
+					i++;
+				}
+				x--;
+				if (islower(s[i])){
+					y = s[i] - 'a';
+					i++;
+				}else if (isupper(s[i])){
+					y = s[i] - 'A';
+					i++;
+				}
+			} else {
+				if (islower(s[i])){
+					y = s[i] - 'a';
+					i++;
+				}else if (isupper(s[i])){
+					y = s[i] - 'A';
+					i++;
+				}
+				while (isdigit(s[i])){
+					x = x * 10 + s[i] - '0';
+					i++;
+				}
+				x--;
+			}
+			printf("x=%d,y=%c\n", x+1, colname[y]);
+			if (x>=MAX_ROW || y>=MAX_COL || x < 0 || y < 0){
+				printf("输入超出棋盘范围，请重新输入：\n");
+				continue;
+			}
+			
+			if (chessboard[x][y] != BLANK){
+				printf("此处已有棋子，请重新输入：\n");
+				continue;
+			}
+			break;
+			}
 			chessboard[x][y] = BLACK;
+
 			draw_chessboard(MAX_ROW, MAX_COL, chessboard);
 			printf("人人对战\n");
 			if (is_win(chessboard, MAX_ROW, MAX_COL) == BLACK){
@@ -237,7 +267,7 @@ void draw_chessman(int type, char *tableline) {
 void draw_chessboard(int row, int col, int chessboard[MAX_ROW][MAX_COL]) {
     int i, j;
     for (int i = 0; i < row; i++){
-		printf("%2d", i);
+		printf("%2d", i+1);
         if (i == 0) {
 			for (int j = 0; j < col; j++) {
 				if (j == 0)
