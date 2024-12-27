@@ -262,6 +262,7 @@ int PVP()
 			printf("x=%d y=%c\n", x, y + 'A');
 			record_move(step, x, y, BLACK);
 			chessboard[x][y] = BLACK;
+
 			draw_chessboard(MAX_ROW, MAX_COL, chessboard);
 			printf("人人对战\n");
 			if (is_win(chessboard, MAX_ROW, MAX_COL) == BLACK)
