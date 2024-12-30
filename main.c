@@ -1,3 +1,4 @@
+/*Author：Luo Zheyuan*/
 #include "board.h" // 棋盘基本功能实现
 #include "check.h" // 判断函数和部分记录函数
 
@@ -147,6 +148,17 @@ int PVE()
 	}
 	else
 	{
+		// 机器先手，第一步落在棋盘中间
+        x = MAX_ROW / 2;
+        y = MAX_COL / 2;
+        step++;
+        printf("black:x=%d y=%c\n", x + 1, y + 'A');
+        record_move(step, x, y, BLACK);
+        chessboard[x][y] = BLACK;
+        draw_chessboard(MAX_ROW, MAX_COL, chessboard);
+        printf("人机对战\n");
+        last_x = x;
+        last_y = y;
 		while (1)
 		{
 			step++;
@@ -201,12 +213,12 @@ int PVE()
 					step--;
 					continue;
 				}
-				if (is_forbidden(chessboard, x, y, WHITE)) // 禁手判断
-				{
-					printf("该位置为禁手，请重新选择位置\n");
-					step--;
-					continue;
-				}
+				// if (is_forbidden(chessboard, x, y, WHITE)) // 注意！人执白棋时不应有禁手检测，这个问题直到比赛时才暴露出来。
+				// {
+				// 	printf("该位置为禁手，请重新选择位置\n");
+				// 	step--;
+				// 	continue;
+				// }
 				printf("x=%d y=%c\n", x, y + 'A');
 				record_move(step, x, y, WHITE);
 				chessboard[x][y] = WHITE;

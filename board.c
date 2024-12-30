@@ -74,13 +74,13 @@ void draw_chessboard(int row, int col, int chessboard[MAX_ROW][MAX_COL])
 // 绘制菜单
 void draw_menu(void)
 {
-	printf("******************************\n");
-	printf("*********欢迎来到五子棋游戏***\n");
-	printf("*********1.人人对战(PVP)******\n");
-	printf("*********2.人机对战(PVE)******\n");
-	printf("*********3.复盘游戏***********\n");
-	printf("*********4.退出游戏***********\n");
-	printf("******************************\n");
+	printf("***********************************************\n");
+	printf("*********欢迎来到五子棋游戏（by Luo Zheyuan）**\n");
+	printf("*********1.人人对战(PVP)***********************\n");
+	printf("*********2.人机对战(PVE)***********************\n");
+	printf("*********3.复盘游戏****************************\n");
+	printf("*********4.退出游戏****************************\n");
+	printf("***********************************************\n");
 	printf("请选择：");
 }
 
@@ -104,7 +104,7 @@ void save_chess(Move moves[], int move_count, int row, int col)
 	while (1)
 	{
 		scanf("%d", &choice);
-		if (choice > 1 || choice < 1)
+		if (choice != 1)
 		{
 			printf("输入错误，请重新选择\n");
 			continue;
@@ -140,12 +140,12 @@ int get_Input(int *x, int *y, int color, int chessboard[MAX_ROW][MAX_COL])
 		{
 			s[i] = '\0'; // 清空数组
 		}
-		while (getchar() != '\n'); // 清除输入缓冲区
+		// while (getchar() != '\n'); // 清除输入缓冲区
 		if (color == BLACK)
 			printf("请黑棋落子：\n");
 		else
 			printf("请白棋落子：\n");
-		printf("请输入坐标（如a10）：");
+		printf("请输入坐标（如a10）：\n输入undo进行悔棋\n");
 		scanf("%s", s);
 		if (s[0] == 'u' && s[1] == 'n' && s[2] == 'd' && s[3] == 'o')
 		{

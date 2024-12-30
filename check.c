@@ -93,6 +93,7 @@ void replay_chess(void)
 	if ((fp = fopen("Save_chess.txt", "r")) == NULL)
 	{
 		printf("复盘失败");
+		exit(0);
 	}
 	else
 	{
@@ -115,6 +116,7 @@ void replay_chess(void)
 				current_step++;
 				draw_chessboard(MAX_ROW, MAX_COL, chessboard);
 				printf("step = %d, x = %d, y = %c\n", current_step, moves[current_step-1].x + 1, moves[current_step-1].y + 'A');
+				printf("按 'n' 进行下一步，按 'p' 进行上一步，按 'a' 打印全部\n");
 			}
 			else if (ch == 'p' && current_step > 0)
 			{
@@ -123,6 +125,7 @@ void replay_chess(void)
 				chessboard[moves[current_step].x][moves[current_step].y] = BLANK;
 				draw_chessboard(MAX_ROW, MAX_COL, chessboard);
 				printf("step = %d, x = %d, y = %c\n", current_step, moves[current_step].x + 1, moves[current_step].y + 'A');
+				printf("按 'n' 进行下一步，按 'p' 进行上一步，按 'a' 打印全部\n");
 			}
 			else if (ch == 'a')
 			{
